@@ -1,14 +1,14 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from product import products
 
 app = Flask(__name__)
 
-@app.route('/products', methods=['GET'])
+@app.route('/product', methods=['GET'])
 def getproducts():
-    return jsonify({"products list": product})
+    return jsonify({"products list": products})
 
 
-@app.route('/products/<string:product_name>', methods=['GET'])
+@app.route('/product/<string:product_name>', methods=['GET'])
 def getproduct(product_name):
     productFound = [i for i in products if i['name'] == product_name]
     if len(productFound) > 0:
@@ -16,5 +16,11 @@ def getproduct(product_name):
     return jsonify({"message": "product not found"})
 
 
+@app.route('/product', methods=['POST'])
+def addproduct():
+    new_product = request.json()
+    return jsonify(new_product)
+
+
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=4000)
